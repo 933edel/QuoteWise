@@ -1,0 +1,123 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: "Roboto", serif;
+  }
+
+  body {
+    @apply overflow-x-hidden transition-colors duration-300;
+    background-color: rgb(49, 48, 50);
+  }
+
+  /* Light Theme */
+  [data-theme="light"] {
+    --bg-color: #f5f5f5;
+    /* Softer off-white background */
+    --secondary-bg-color: #eaeaea;
+    /* Muted secondary background */
+    --text-color: #2a2a2a;
+    /* Dark gray instead of pure black for reduced contrast */
+    --border-color: #ccc;
+    /* Slightly darker borders for better visibility */
+    --primary-color: #0a74da;
+    /* A slightly softer blue */
+    --hover-color: #0862b6;
+    /* Less intense hover color */
+    --btn-primary-bg: #0a74da;
+    /* Soft blue */
+    --btn-primary-text: #ffffff;
+    /* White text for contrast */
+    --btn-primary-hover: #0862b6;
+    /* Slightly darker on hover */
+
+    --btn-secondary-bg: #5c677d;
+    /* Warm gray-blue */
+    --btn-secondary-text: #ffffff;
+    /* White text */
+    --btn-secondary-hover: #4a5568;
+    /* Darker on hover */
+  }
+
+
+  /* Dark Theme */
+  [data-theme="dark"] {
+    --bg-color: #1a1a2e;
+    /* Deep dark navy with a slight purple undertone */
+    --secondary-bg-color: #222243;
+    /* Darker muted purple-gray for contrast */
+    --text-color: #e0e0e0;
+    /* Soft light gray for readability */
+    --border-color: #3d3d5c;
+    /* Muted purple-gray for subtle borders */
+
+    --primary-color: #8a2be2;
+    /* A rich, elegant purple */
+    --hover-color: #6a1bb9;
+    /* Slightly darker purple for hover effects */
+
+    --btn-primary-bg: #8a2be2;
+    /* Bold purple for primary buttons */
+    --btn-primary-text: #ffffff;
+    /* White text for contrast */
+    --btn-primary-hover: #6a1bb9;
+    /* Darker purple on hover */
+
+    --btn-secondary-bg: #5d4e8e;
+    /* Muted lavender-gray for a softer secondary button */
+    --btn-secondary-text: #ffffff;
+    /* White for clear contrast */
+    --btn-secondary-hover: #4a3c7a;
+    /* Deeper purple for hover effect */
+  }
+
+
+
+  /* Apply theme variables */
+  body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+  }
+}
+
+@layer components {
+  .input-box {
+    @apply w-full text-sm bg-transparent border-[1.5px] px-5 py-3 rounded mb-4 outline-none;
+    border-color: var(--border-color);
+    color: var(--text-color);
+    background-color: var(--secondary-bg-color);
+    /* Muted background for better contrast */
+  }
+
+  .btn-primary {
+    @apply w-full text-sm p-2 rounded my-1 transition;
+    background-color: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+  }
+
+  .btn-primary:hover {
+    background-color: var(--btn-primary-hover);
+  }
+
+  .btn-secondary {
+    @apply w-full text-sm p-2 rounded my-1 transition;
+    background-color: var(--btn-secondary-bg);
+    color: var(--btn-secondary-text);
+  }
+
+  .btn-secondary:hover {
+    background-color: var(--btn-secondary-hover);
+  }
+
+  .icon-btn {
+    @apply text-xl cursor-pointer transition;
+    color: var(--text-color);
+  }
+
+  .input-label {
+    @apply text-xs;
+    color: var(--text-color);
+  }
+}
