@@ -8,6 +8,7 @@ import validator from "validator";
 
 dotenv.config();
 
+// Configure Nodemailer
 const transporter = nodemailer.createTransport({
   service: "Gmail",
   auth: {
@@ -167,11 +168,12 @@ export const signin = async (req, res, next) => {
 
     const { password: _, ...userWithoutPassword } = user.toObject();
 
+    // Set cookie for cross-origin (Vercel frontend)
     res
       .cookie("access_token", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "Lax",
+        secure: true, // must be HTTPS
+        sameSite: "None", // allow cross-site cookies
       })
       .status(200)
       .json({
@@ -189,8 +191,8 @@ export const signout = (req, res, next) => {
   try {
     res.clearCookie("access_token", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "Lax",
+      secure: true, // must be HTTPS
+      sameSite: "None",
     });
 
     res.status(200).json({ success: true, message: "Log out successful" });

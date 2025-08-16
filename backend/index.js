@@ -8,48 +8,52 @@ import helmet from "helmet";
 
 dotenv.config();
 
+// Connect to MongoDB
 mongoose
   .connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log("Connected to mongoDB");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+  .then(() => console.log("Connected to mongoDB"))
+  .catch((err) => console.log(err));
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(helmet()); //secure HTTP headers
-// app.use(mongoSanitize()); // Prevents NoSQL injection
+// -------------------- MIDDLEWARE --------------------
+app.use(helmet()); // Secure HTTP headers
+// app.use(mongoSanitize()); // Prevent NoSQL injection
+app.use(express.json()); // Parse JSON bodies
+app.use(cookieParser()); // Parse cookies
 
-// to make input as json
-app.use(express.json());
-app.use(cookieParser());
-app.use(cors({ origin: [process.env.FRONTEND_URL], credentials: true }));
+// CORS configuration for Vercel frontend
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL, // allow only your frontend
+    credentials: true, // allow cookies
+  })
+);
 
-//cron job
-import "./utils/cronJob.js";
-
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
-
-// import routes
+// -------------------- ROUTES --------------------
 import authRouter from "./routes/auth.route.js";
 import quoteRouter from "./routes/quote.route.js";
 
 app.use("/api/auth", authRouter);
 app.use("/api/quotes", quoteRouter);
 
-// error handling
+// -------------------- CRON JOB --------------------
+import "./utils/cronJob.js";
+
+// -------------------- ERROR HANDLING --------------------
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
-  const message = err.message || "Internal Serer Error";
+  const message = err.message || "Internal Server Error";
 
-  return res.status(statusCode).json({
+  res.status(statusCode).json({
     success: false,
     statusCode,
     message,
   });
+});
+
+// -------------------- START SERVER --------------------
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
