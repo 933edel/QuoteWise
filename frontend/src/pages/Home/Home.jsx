@@ -38,7 +38,7 @@ const Home = () => {
   const getAllQuotes = async (page) => {
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/quotes/all?page=${page}`,
+        `${import.meta.env.VITE_API_URL}/quotes/all?page=${page}`,
         { withCredentials: true }
       );
 
@@ -66,7 +66,7 @@ const Home = () => {
   const deleteQuote = async (quoteId) => {
     try {
       const res = await axios.delete(
-        `${API_URL}/api/quotes/delete/${quoteId}`,
+        `${import.meta.env.VITE_API_URL}/quotes/delete/${quoteId}`,
         { withCredentials: true }
       );
 
@@ -85,10 +85,13 @@ const Home = () => {
 
   const onSearchQuote = async (query) => {
     try {
-      const res = await axios.get(`${API_URL}/api/quotes/search`, {
-        params: { query },
-        withCredentials: true,
-      });
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/quotes/search`,
+        {
+          params: { query },
+          withCredentials: true,
+        }
+      );
 
       if (!res.data.success) {
         toast.error(res.data.message);
@@ -118,7 +121,7 @@ const Home = () => {
 
     try {
       const res = await axios.put(
-        `${API_URL}/api/quotes/update-quote-pinned/${listId}`,
+        `${import.meta.env.VITE_API_URL}/quotes/update-quote-pinned/${listId}`,
         { isPinned: !quoteList.isPinned },
         { withCredentials: true }
       );

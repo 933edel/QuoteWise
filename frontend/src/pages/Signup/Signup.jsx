@@ -30,7 +30,7 @@ const Signup = () => {
 
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/auth/signup`,
+        `${import.meta.env.VITE_API_URL}/auth/signup`,
         {
           username: name,
           email,

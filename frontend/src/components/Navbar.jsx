@@ -31,7 +31,7 @@ const Navbar = ({ userInfo, onSearchQuote, handleClearSearch }) => {
       dispatch(signoutStart());
 
       const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/auth/signout`,
+        `${import.meta.env.VITE_API_URL}/auth/signout`,
         {
           withCredentials: true,
         }

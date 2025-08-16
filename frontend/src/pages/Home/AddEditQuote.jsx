@@ -57,15 +57,13 @@ const AddEditQuote = ({ onClose, quoteListData, type, getAllQuoteLists }) => {
         }
 
         res = await axios.put(
-          `${import.meta.env.VITE_API_URL}/api/quotes/edit/${
-            quoteListData._id
-          }`,
+          `${import.meta.env.VITE_API_URL}/quotes/edit/${quoteListData._id}`,
           payload,
           { withCredentials: true }
         );
       } else {
         res = await axios.post(
-          `${import.meta.env.VITE_API_URL}/api/quotes/add`,
+          `${import.meta.env.VITE_API_URL}/quotes/add`,
           payload,
           { withCredentials: true }
         );
@@ -97,7 +95,7 @@ const AddEditQuote = ({ onClose, quoteListData, type, getAllQuoteLists }) => {
 
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/quotes/generate`,
+        `${import.meta.env.VITE_API_URL}/quotes/generate`,
         { tags },
         { withCredentials: true }
       );
