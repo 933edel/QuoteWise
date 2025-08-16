@@ -167,6 +167,7 @@ export const signin = async (req, res, next) => {
       secure: true, // must be true in production
       sameSite: "None", // allow cross-site requests
       path: "/",
+      domain: ".onrender.com",
     });
 
     res.status(200).json({
@@ -186,6 +187,7 @@ export const signout = (req, res, next) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "none",
+      domain: ".onrender.com",
     });
 
     res.status(200).json({ success: true, message: "Log out successful" });
