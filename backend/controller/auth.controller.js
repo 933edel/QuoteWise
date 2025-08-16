@@ -164,10 +164,9 @@ export const signin = async (req, res, next) => {
 
     res.cookie("access_token", token, {
       httpOnly: true,
-      secure: true, // must be true in production
-      sameSite: "None", // allow cross-site requests
+      secure: process.env.NODE_ENV === "production", // true on Render
+      sameSite: "lax", // first-party requests after the proxy rewrite
       path: "/",
-      domain: ".onrender.com",
     });
 
     res.status(200).json({
@@ -186,8 +185,8 @@ export const signout = (req, res, next) => {
     res.clearCookie("access_token", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "none",
-      domain: ".onrender.com",
+      sameSite: "lax",
+      path: "/",
     });
 
     res.status(200).json({ success: true, message: "Log out successful" });
