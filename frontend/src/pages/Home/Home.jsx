@@ -66,7 +66,7 @@ const Home = () => {
   const deleteQuote = async (quoteId) => {
     try {
       const res = await axios.delete(
-        `http://localhost:3000/api/quotes/delete/${quoteId}`,
+        `${API_URL}/api/quotes/delete/${quoteId}`,
         { withCredentials: true }
       );
 
@@ -85,7 +85,7 @@ const Home = () => {
 
   const onSearchQuote = async (query) => {
     try {
-      const res = await axios.get("http://localhost:3000/api/quotes/search", {
+      const res = await axios.get(`${API_URL}/api/quotes/search`, {
         params: { query },
         withCredentials: true,
       });
@@ -118,7 +118,7 @@ const Home = () => {
 
     try {
       const res = await axios.put(
-        `http://localhost:3000/api/quotes/update-quote-pinned/${listId}`,
+        `${API_URL}/api/quotes/update-quote-pinned/${listId}`,
         { isPinned: !quoteList.isPinned },
         { withCredentials: true }
       );

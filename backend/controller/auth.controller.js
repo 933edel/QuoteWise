@@ -149,18 +149,12 @@ export const signin = async (req, res, next) => {
 
   try {
     const user = await User.findOne({ email }).select("+password");
-    if (!user) {
-      return next(errorHandler(404, "User not found"));
-    }
-
-    if (!user.verified) {
+    if (!user) return next(errorHandler(404, "User not found"));
+    if (!user.verified)
       return next(errorHandler(401, "Please verify your email address."));
-    }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      return next(errorHandler(401, "Wrong credentials"));
-    }
+    if (!isPasswordValid) return next(errorHandler(401, "Wrong credentials"));
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "7d",
@@ -168,19 +162,17 @@ export const signin = async (req, res, next) => {
 
     const { password: _, ...userWithoutPassword } = user.toObject();
 
-    // Set cookie for cross-origin (Vercel frontend)
-    res
-      .cookie("access_token", token, {
-        httpOnly: true,
-        secure: true, // must be HTTPS
-        sameSite: "None", // allow cross-site cookies
-      })
-      .status(200)
-      .json({
-        success: true,
-        message: "Login Successful!",
-        user: userWithoutPassword,
-      });
+    res.cookie("access_token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "none",
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Login Successful!",
+      user: userWithoutPassword,
+    });
   } catch (error) {
     next(error);
   }
@@ -191,8 +183,8 @@ export const signout = (req, res, next) => {
   try {
     res.clearCookie("access_token", {
       httpOnly: true,
-      secure: true, // must be HTTPS
-      sameSite: "None",
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "none",
     });
 
     res.status(200).json({ success: true, message: "Log out successful" });
