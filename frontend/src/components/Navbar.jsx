@@ -30,9 +30,12 @@ const Navbar = ({ userInfo, onSearchQuote, handleClearSearch }) => {
     try {
       dispatch(signoutStart());
 
-      const res = await axios.get("http://localhost:3000/api/auth/signout", {
-        withCredentials: true,
-      });
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/auth/signout`,
+        {
+          withCredentials: true,
+        }
+      );
 
       if (!res.data.success) {
         dispatch(signoutFailure(res.data.message));

@@ -1,7 +1,7 @@
 import User from "../models/user.model.js";
 import { errorHandler } from "../utils/error.js";
 import nodemailer from "nodemailer";
-import bcrypt from "bcryptjs"; // Use bcryptjs for consistency
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import validator from "validator";
@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-//  Send OTP for signup
+// -------------------- SIGNUP --------------------
 export const signup = async (req, res, next) => {
   const { username, email, password } = req.body;
 
@@ -38,18 +38,13 @@ export const signup = async (req, res, next) => {
       return next(errorHandler(400, "User with this email already exists"));
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Generate OTP
     const otp = Math.floor(100000 + Math.random() * 900000);
-
-    // Create OTP token
     const otpToken = jwt.sign({ email, otp }, process.env.JWT_SECRET, {
       expiresIn: "5m",
     });
 
-    // Send OTP email
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: email,
@@ -57,9 +52,8 @@ export const signup = async (req, res, next) => {
       text: `Your OTP code is: ${otp}. It is valid for 5 minutes.`,
     });
 
-    // Create User object but do not save yet.
     const newUser = new User({
-      username: validator.escape(username.trim()), // Sanitize username
+      username: validator.escape(username.trim()),
       email,
       password: hashedPassword,
     });
@@ -76,7 +70,7 @@ export const signup = async (req, res, next) => {
   }
 };
 
-//  Verify OTP and create user
+// -------------------- VERIFY OTP --------------------
 export const verifyOtp = async (req, res, next) => {
   const { email, otp, otpToken } = req.body;
 
@@ -115,7 +109,7 @@ export const verifyOtp = async (req, res, next) => {
   }
 };
 
-//  Resend OTP
+// -------------------- RESEND OTP --------------------
 export const resendOtp = async (req, res, next) => {
   const { email } = req.body;
 
@@ -125,7 +119,6 @@ export const resendOtp = async (req, res, next) => {
 
   try {
     const otp = Math.floor(100000 + Math.random() * 900000);
-
     const otpToken = jwt.sign({ email, otp }, process.env.JWT_SECRET, {
       expiresIn: "5m",
     });
@@ -145,7 +138,7 @@ export const resendOtp = async (req, res, next) => {
   }
 };
 
-//  User Sign-in (Login)
+// -------------------- SIGNIN --------------------
 export const signin = async (req, res, next) => {
   const { email, password } = req.body;
 
@@ -159,7 +152,6 @@ export const signin = async (req, res, next) => {
       return next(errorHandler(404, "User not found"));
     }
 
-    // Check if user is verified
     if (!user.verified) {
       return next(errorHandler(401, "Please verify your email address."));
     }
@@ -192,7 +184,7 @@ export const signin = async (req, res, next) => {
   }
 };
 
-//  User Sign-out
+// -------------------- SIGNOUT --------------------
 export const signout = (req, res, next) => {
   try {
     res.clearCookie("access_token", {

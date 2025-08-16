@@ -59,7 +59,7 @@ const VerifyOTP = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:3000/api/auth/verify-otp",
+        `${import.meta.env.VITE_API_URL}/api/auth/verify-otp`,
         {
           email: currentUser.email,
           otp,
@@ -93,7 +93,7 @@ const VerifyOTP = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:3000/api/auth/resend-otp",
+        `${import.meta.env.VITE_API_URL}/api/auth/resend-otp`,
         {
           email: currentUser.email,
         }

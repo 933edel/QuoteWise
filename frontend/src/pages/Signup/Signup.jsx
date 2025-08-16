@@ -29,11 +29,14 @@ const Signup = () => {
     dispatch(signUpStart());
 
     try {
-      const res = await axios.post("http://localhost:3000/api/auth/signup", {
-        username: name,
-        email,
-        password, // Password sent, but will NOT be stored in client state
-      });
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/auth/signup`,
+        {
+          username: name,
+          email,
+          password, // Password sent, but will NOT be stored in client state
+        }
+      );
 
       if (res.data.success) {
         dispatch(

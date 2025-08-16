@@ -26,14 +26,23 @@ const userSchema = new mongoose.Schema(
       required: [true, "Password is required"],
       select: false, // 🛡️ Prevents password from being fetched
     },
+    verified: {
+      type: Boolean,
+      default: false,
+    },
+    // CHANGED: Add OTP token and expiration for email verification
+    otpToken: {
+      type: String,
+      default: null,
+    },
+    otpExpires: {
+      type: Date,
+      default: null,
+    },
     createdAt: {
       type: Date,
       default: Date.now,
       immutable: true, // 🛡️ Prevents modification after creation
-    },
-    verified: {
-      type: Boolean,
-      default: false,
     },
   },
   { timestamps: true }

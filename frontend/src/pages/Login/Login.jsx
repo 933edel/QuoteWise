@@ -38,7 +38,7 @@ const Login = () => {
       dispatch(signInStart());
 
       const res = await axios.post(
-        "http://localhost:3000/api/auth/signin",
+        `${import.meta.env.VITE_API_URL}/api/auth/signin`,
         { email, password },
         { withCredentials: true }
       );

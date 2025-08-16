@@ -38,7 +38,7 @@ const Home = () => {
   const getAllQuotes = async (page) => {
     try {
       const res = await axios.get(
-        `http://localhost:3000/api/quotes/all?page=${page}`,
+        `${import.meta.env.VITE_API_URL}/api/quotes/all?page=${page}`,
         { withCredentials: true }
       );
 
